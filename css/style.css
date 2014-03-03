@@ -1,0 +1,114 @@
+hr {
+    margin: 5px 0px;
+}
+.editMore {
+    margin-bottom: 5px;
+}
+#wyswUczestnicy li:nth-child(2n+1) {
+    background-color: #F5F5F5;
+}
+
+#tTabela {
+    width: 420px;
+    overflow: hidden;
+}
+
+#tTabela .runda1
+{
+    float: left;
+    width: 140px;
+}
+
+#tTabela .naglowek {
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+#tTabela .odstep_r1 {
+    display: block;
+    height: 10px;
+}
+#tTabela .runda {
+    overflow: hidden;
+    width: 100%;
+}
+
+#tTabela .nazwa {
+    margin-left: 5px;
+    width: 95px;
+    float: left;
+}
+
+#tTabela .wynik {
+    width: 20px;
+    float: left;
+    text-align: right;
+}
+
+#tTabela .kreski {
+    width: 20px;
+    float: left;
+}
+
+#tTabela .runda1_gora .nazwa {
+    background-color: green;
+}
+
+#tTabela .runda1_dol .nazwa {
+    background-color: blue;
+}
+
+#tTabela .mecz_1 .runda1_dol .kreski {
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    height: 20px;
+}
+
+#tTabela .mecz_2 .runda1_gora .kreski {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    height: 20px;
+}
+
+#tTabela .runda1_przerwa1 {
+    border-right: 1px solid black;
+    
+}
+
+#tTabela .runda2
+{
+    float: left;
+    width: 140px;
+}
+
+#tTabela .runda2 .odstep_r2 {
+    display: block;
+    height: 40px;
+}
+
+#tTabela .runda2_przerwa1 {
+    height: 80px;
+    border-right: 1px solid black;
+}
+
+#tTabela .runda2_przerwa2 {
+    height: 80px;
+}
+
+#tTabela .runda3 {
+    float: left;
+    width: 140px;
+}
+
+#tTabela .odstep_r3
+{
+    display: block;
+    height: 100px;
+}
+
+#tTabela .runda3_przerwa1
+{
+    display: block;
+    height: 200px;
+    border-right: 1px solid black; 
+}
