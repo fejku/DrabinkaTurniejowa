@@ -139,7 +139,6 @@ function Usun() {
 
 function RysujTabele() {
     var tabela = $('#dDrabinka');
-    var runda = tabela.find('.runda');
     
     var wysPole = 20;
     var wysPierwOdst = 10;
@@ -152,57 +151,58 @@ function RysujTabele() {
     var gracze = localStorage.getItem('Uczestnicy');
     gracze = JSON.parse(gracze);
     var iloscGraczy = gracze.length;
-    var iloscRund = 2;
+    var iloscRund = KtoraPotega2(iloscGraczy);
+    var str = "";
     
-    for(j = 0; j < iloscRund; j++) {
-        tabela.append(
-                '<div class="runda">' +
-                    '<div class="naglowek">Runda 1</div>' +
-                    '<div class="pierwOdst"></div>'
-        );
-        for (i = 0; i < KolejnaPot2(iloscGraczy); i++) {
-            //var runda = tabela.find('.runda');
-            //runda.append('ALA');
-//            runda.append(
-//                '<div class="gracz gracz'+i+'">' +
-//                    '<div class="nazwa">' +
-//                        gracze[i] +
-//                    '</div>' +
-//                    '<div class="wynik">' +
-//                        0 +
-//                    '</div>' +
-//                    '<div class="kreski">' +
-//                        '&nbsp;'+
-//                    '</div>' +
-//                '</div>'
-//                    );
-//            //Co dwoch graczy (jeden mecz)
-//            //i+1 bo zaczyna sie od 0
-//            if(!((i + 1) % 2)) {
-//
-//                //Co 2 ale nie 4 graczy
-//                if(((i + 1) % 4)) {
-//                    runda.find('.gracz'+ i).find('.kreski').css({'border-top': '1px solid black', 'border-right': '1px solid black'});
-//                    runda.find('.gracz'+ i).find('.kreski').css({'border-top': '1px solid black', 'border-right': '1px solid black'});
-//                }
-//                //Nie rob odstepu po ostatnim meczu
-//                if(i < (KolejnaPot2(iloscGraczy) - 1)) {
-//                    //Zrob odstep
-//                    runda.append(
-//                        '<div class="odstep odstep'+((i-1)/2)+'"></div>'
-//                    );
-//                }
-//            }
-//            //Co 4 element
-//            if(!((i + 1) % 4)) {
-//                //Co 4 elementy - 1 (nie to samo co, co 3 elementy) 3, 7, 11 rysuj ramke
-//                runda.find('.gracz'+ (i-1)).find('.kreski').css({'border-right': '1px solid black'});
-//                //Co 4 elementy rysuj ramke
-//                runda.find('.gracz'+ i).find('.kreski').css({'border-top': '1px solid black'});
-//            }
+    for(var j = 0; j < iloscRund; j++) {
+        str += '<div id="r'+j+'" class="runda">' +
+               '<div class="naglowek">Runda 1</div>' +
+               '<div class="pierwOdst"></div>';
+        for (var i = 0; i < (KolejnaPot2(iloscGraczy) / DzielnikKolejneRundy(j)); i++) {
+            str += '<div class="gracz gracz'+i+'">' +
+                        '<div class="nazwa">' +
+                            gracze[i] +
+                        '</div>' +
+                        '<div class="wynik">' +
+                            0 +
+                        '</div>' +
+                        '<div class="kreski">' +
+                            '&nbsp;'+
+                        '</div>' +
+                    '</div>';
+
+            //Co dwoch graczy (jeden mecz)
+            //i+1 bo zaczyna sie od 0
+            if(!((i + 1) % 2)) {
+                //Nie rob odstepu po ostatnim meczu
+                if(i < ((KolejnaPot2(iloscGraczy) / DzielnikKolejneRundy(j)) - 1)) {
+                    //Zrob odstep
+                    str += '<div class="odstep odstep'+((i-1)/2)+'"></div>';
+                }
+            }
         }
-//        runda.append('<div class="pierwOdst"></div>');
-        tabela.append('</div>');
+        str += '<div class="pierwOdst"></div>';
+        str += '</div>';//end runda
+    }
+    
+    tabela.append(str);
+    
+    for(var i = 0; i < KolejnaPot2(iloscGraczy); i++) {
+        //co drugi
+        if(!((i + 1) % 2)) {
+            //ale nie co czwarty
+            if(((i + 1) % 4)) {
+                    tabela.find('.gracz'+ i).find('.kreski').css({'border-top': '1px solid black', 'border-right': '1px solid black'});
+                    tabela.find('.gracz'+ i).find('.kreski').css({'border-top': '1px solid black', 'border-right': '1px solid black'});
+                }
+        }
+        //co czwarty
+        if(!((i + 1) % 4)) {
+            //Co 4 elementy - 1 (nie to samo co, co 3 elementy) 3, 7, 11 rysuj ramke
+            tabela.find('.gracz'+ (i-1)).find('.kreski').css({'border-right': '1px solid black'});
+            //Co 4 elementy rysuj ramke
+            tabela.find('.gracz'+ i).find('.kreski').css({'border-top': '1px solid black'});
+        }
     }
     
     //Ustawienie szerokosci tabeli na ilosc rund * szerokosc 
@@ -210,7 +210,7 @@ function RysujTabele() {
     //tabela.css('width', 2 * (margNazwa + szerNazwa + szerWyn + szerKresk));
     
     tabela.css({'overflow': 'hidden'});
-    runda.css({'width': margNazwa + szerNazwa + szerWyn + szerKresk, 'float': 'left'});
+    tabela.find('.runda').css({'width': margNazwa + szerNazwa + szerWyn + szerKresk, 'float': 'left'});
     
     tabela.find('.gracz').css({'overflow': 'hidden'});
     
@@ -220,6 +220,13 @@ function RysujTabele() {
     tabela.find('.pierwOdst').css({'height': wysPierwOdst});
     tabela.find('.odstep').css({'height': wysOdst});
     $('.runda .odstep:nth-child(odd)').css({'border-right': '1px solid black'});
+    var poprzWys = 10;
+    for(var i = 1; i < iloscRund; i++) {
+        tabela.find('#r'+i).find('.pierwOdst').css({'height': (wysPole + (2 * poprzWys))});
+        poprzWys = parseInt(tabela.find('#r'+ i ).find('.pierwOdst').css('height'), 10);
+        tabela.find('#r'+i).find('.odstep').css({'height': (poprzWys * 2)});
+    }
+    tabela.find('#r'+(iloscRund-1)).find('.kreski').css({'border': 0});
 }
 
 var KolejnaPot2 = function (liczba) {
@@ -230,5 +237,23 @@ var KolejnaPot2 = function (liczba) {
     do {
         pom *= 2;
     } while(pom < liczba);
+    return pom;
+}
+
+var KtoraPotega2 = function (liczba) {
+    var pom = 1, i = 0;
+    do {
+        i++;
+        pom *= 2;
+    } while(pom < liczba);
+    return i;
+}
+
+var DzielnikKolejneRundy = function (runda){
+    var pom = 1;
+    for(var i = 0; i < runda; i++)
+    {
+        pom *= 2;
+    }
     return pom;
 }

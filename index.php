@@ -73,7 +73,7 @@
         
         
         
-        <div id="tTabela">
+<!--        <div id="tTabela">
             <div class="runda1">
                 <div class="naglowek">
                     Runda 1
@@ -241,7 +241,7 @@
                 <div class="odstep_r3"></div>
             </div>
         </div>
-        <input type="text" id="ss"><button id="ss1">OK</button>
+        <input type="text" id="ss"><button id="ss1">OK</button>-->
         <div id="sylwia"></div>
     <?php 
         $drab = new Drabinka();
