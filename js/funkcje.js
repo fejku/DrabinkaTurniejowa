@@ -1,35 +1,58 @@
 $(function () {
-    //Poda zaladowaniu strony wyswietl wszystkich uczestnikow
-    Wyswietl();
+    //Po zaladowaniu strony wyswietl wszystkich uczestnikow
+    Wyswietl(1);
     //Dodaj zdarzenie buttonowi btnDodaj
     $('#btnDodaj').on('click', Dodaj);
-    //Dodaje zdarzenie rysowania tabeli
-    $('#btnRysuj').on('click', RysujTabele);
+    //Ukrycie przy ladowaniu strony bledow przy wprowadzaniu danych
+    $('.help-block').hide();
+    $('#paginator').bootstrapPaginator({
+        totalPages: LiczbaStron(),
+        onPageClicked: function(e, originalEvent, type, page) {
+            Wyswietl(page);
+        }
+    });
+//    $('#paginator').find('ul').addClass("pagination");
+    
+
 });
 
 /**
  * Wyswietla listę uczestników
  */
-function Wyswietl()
+function Wyswietl(ktoraStrona)
 {
     //Usuń wszystkie li
     $('#wyswUczestnicy').children().remove();
     
     var tblUczest = localStorage.getItem('Uczestnicy');
     tblUczest = JSON.parse(tblUczest);
-    for(var i in tblUczest)
+    
+    //Paginator numeruje od 1
+    ktoraStrona--;
+    for(var i = (ktoraStrona * 10); i < (ktoraStrona * 10) + 10; i++)
     {
-        $('#wyswUczestnicy').append(
-            '<li>' +
-            '<label>' + tblUczest[i] + '</label>' +
-            '<div style="float: right">'+
-            '<button type="button" class="btn btn-default btn-xs btnEdytuj"><span class="glyphicon glyphicon-pencil"></span></button>'+
-            '<button type="button" class="btn btn-default btn-xs btnUsun"><span class="glyphicon glyphicon-trash"></span></button>'+
-            '</div>'+
-            '</li>');        
+        //Jezeli na ostatniej stronie jest nie rowna liczba 
+        //elementow nie wyswiatlaj undefinad
+        if(typeof(tblUczest[i]) != "undefined") {
+            $('#wyswUczestnicy').append(
+                '<li value="'+(i+1)+'">' +
+                '<label>' + tblUczest[i] + '</label>' +
+                '<div style="float: right">'+
+                '<button type="button" class="btn btn-default btn-xs btnEdytuj"><span class="glyphicon glyphicon-pencil"></span></button>'+
+                '<button type="button" class="btn btn-default btn-xs btnUsun"><span class="glyphicon glyphicon-trash"></span></button>'+
+                '</div>'+
+                '</li>');
+        }        
     }
     $('#wyswUczestnicy').find('.btnEdytuj').on('click', Edytuj);
     $('#wyswUczestnicy').find('.btnUsun').on('click', Usun);
+    $('#paginator').find('ul').addClass("pagination");
+    if(LiczbaGraczy() > 2)
+        //Dodaje zdarzenie rysowania tabeli
+        $('#btnRysuj').on('click', RysujTabele);
+    else
+        //Wyswietl komunikat ze musi być wiecej niz 2 graczy
+        $('#btnRysuj').off('click');
 }
 
 /**
@@ -53,7 +76,9 @@ function Dodaj() {
     
     //Wyczysc wartosc w inpucie po dodaniu elementu
     $('#gracz').val('');
-    Wyswietl();
+    Wyswietl($('#paginator').bootstrapPaginator("getPages")["current"]);
+    //Odswiez ilosc stron
+    $('#paginator').bootstrapPaginator({totalPages: LiczbaStron()});
 }
 
 /**
@@ -111,7 +136,7 @@ function Zmien() {
         localStorage.setItem('Uczestnicy', JSON.stringify(tblUczest));
     }
     
-    Wyswietl();
+    Wyswietl($('#paginator').bootstrapPaginator("getPages")["current"]);
 }
 
 /**
@@ -129,14 +154,18 @@ function Usun() {
     //Zapisz do localStorage string tblUczest
     localStorage.setItem('Uczestnicy', JSON.stringify(tblUczest));
 
-    Wyswietl();
+    Wyswietl($('#paginator').bootstrapPaginator("getPages")["current"]);
+    //Odswiez ilosc stron
+    $('#paginator').bootstrapPaginator({totalPages: LiczbaStron()});
 }
 
 //Rysuje Drabinke
 function RysujTabele() {
     var tabela = $('#dDrabinka');
+    //Przed rysowaniem wyczysc div, bo mogl byc wczesniej nacisniety
+    tabela.text("");
     
-    var wysPole = 20;
+    var wysPole = 33;
     var wysPierwOdst = 10;
     var wysOdst = 20;
     var szerNazwa = 95;
@@ -174,10 +203,10 @@ function RysujTabele() {
     
     for(var j = 0; j < iloscRund; j++) {
         str += '<div id="r'+j+'" class="runda">' +
-               '<div class="naglowek">Runda '+(j + 1)+'</div>' +
+               '<pre>Runda '+(j + 1)+'</pre>' +
                '<div class="pierwOdst"></div>';
         for (var i = 0; i < (wielkoscDrabinki / DzielnikKolejneRundy(j)); i++) {
-            str += '<div class="gracz gracz'+i+'">' +
+            str += '<div class="gracz gracz'+i+'" data-toggle="modal" data-id="'+i+'">' +
                         '<div class="nazwa">';
             //Wyswietlaj nazwy graczy tylko w 1 rundzie??
             if(j == 0)
@@ -235,11 +264,9 @@ function RysujTabele() {
     tabela.css({'overflow': 'hidden'});
     tabela.find('.runda').css({'width': margNazwa + szerNazwa + szerWyn + szerKresk, 'float': 'left'});
     
-    tabela.find('.naglowek').css({'font-weight': 'bold', 'padding-left': '10px', 'margin-top': '5px'});
-    
     tabela.find('.gracz').css({'overflow': 'hidden'});
     
-    tabela.find('.nazwa').css({'background-color': 'green', 'width': szerNazwa, 'height': wysPole, 'margin-left': margNazwa, 'float': 'left'});
+    tabela.find('.nazwa').css({'width': szerNazwa, 'height': wysPole, 'margin-left': margNazwa, 'float': 'left'});
     tabela.find('.wynik').css({'width': szerWyn, 'height': wysPole, 'text-align': 'right', 'float': 'left'});
     tabela.find('.kreski').css({'width': szerKresk, 'height': wysPole, 'float': 'left'});
     tabela.find('.pierwOdst').css({'height': wysPierwOdst});
@@ -258,6 +285,27 @@ function RysujTabele() {
     }
     //w ostaniej rundzie nie wyswietlaj kresek
     tabela.find('#r'+(iloscRund-1)).find('.kreski').css({'border': 0});
+    //Po nacisnieciu na gracza
+    $('.gracz').on('click', function() {
+        //Pokaz okienko modalne
+        $('#mWynik').modal({show: true});
+        //Przypisz do zmiennej id gracza na ktorego nacisnieto
+        var gracz1Id = $(this).data('id');
+        //Jezeli wybrano drugiego gracza z meczu to 
+        //wez wczesniejszego jak nie to nastepnego
+        if(gracz1Id % 2 == 0) {
+            var gracz2Id = gracz1Id + 1;
+        } else {
+            var gracz2Id = gracz1Id;
+            gracz1Id--
+        }
+        //
+        $('#myModalLabel').text("Wynik meczu");
+        $('#lGracz1').text(gracze[gracz1Id]);
+        $('#lGracz2').text(gracze[gracz2Id]);
+        //console.log(gracze[graczId]);
+        //$(".modal-body #bookId").val( myBookId );
+    });
 }
 
 
@@ -301,4 +349,17 @@ function pomieszajTablice(tab) {
         tab[j] = temp;
     }
     return tab;
+}
+
+//Ilosc stron w Paginatorze
+function LiczbaStron() {
+    var iloscGraczy = JSON.parse(localStorage.getItem('Uczestnicy')).length;
+    var liczbaStron = Math.floor(iloscGraczy / 10);
+    if(iloscGraczy % 10!=0)
+        liczbaStron++;
+    return liczbaStron;
+}
+
+function LiczbaGraczy() {
+    return JSON.parse(localStorage.getItem('Uczestnicy')).length;
 }

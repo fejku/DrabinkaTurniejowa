@@ -10,7 +10,6 @@
       <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
     <title>Starter Template for Bootstrap</title>
-
     <!-- Bootstrap core CSS -->
     <link href="./css/bootstrap.min.css" rel="stylesheet">
 
@@ -31,19 +30,57 @@
   <body>
 
     <div class="container">
+<!-- Button trigger modal -->
+<!--<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button>-->
 
-        <div class="row">
-            <div class="col-xs-12">
-                <label>Lista uczestników:</label>
+<!-- Modal -->
+<div class="modal fade" id="mWynik" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label id="lGracz1" class="col-xs-10 control-label"></label>
+                        <div class="col-xs-2">
+                            <input type="text" class="form-control" id="iGracz1" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="lGracz2" class="col-xs-10 control-label"></label>
+                        <div class="col-xs-2">
+                            <input type="text" class="form-control" id="iGracz2" placeholder="0">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                <button type="button" class="btn btn-primary">Zatwierdź</button>
             </div>
         </div>
-        <strong id="a11">a</strong><strong id="a22">b</strong><strong id="a33">c</strong><strong id="a44">d</strong>
-        <div class="row">
-            <div class="col-xs-6">
-                <ol id="wyswUczestnicy"></ol>
-            </div>
-        </div>
+    </div>
+</div>
+
+
+
         
+        
+        
+        <div id="dDrabinka"></div>
+        <div class="row"><div class="col-xs-12 col-xs-offset-3">
+        <div id="dTabela">
+            <div class="row">
+                <div class="col-xs-6">
+                <button id="btnRysuj" class="btn btn-success btn-block">Rysuj</button>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-12">
                 <label>Dodaj uczestników:</label>
@@ -54,7 +91,7 @@
                 <div class="input-group">
                     <input class="form-control" type="text" placeholder="Nazwa" id="gracz">
                     <span class="input-group-btn">
-                        <button type="submit" class="btn btn-default" id="btnDodaj">Dodaj</button>
+                        <button type="submit" class="btn btn-primary" id="btnDodaj">Dodaj</button>
                     </span>
                 </div><!-- /input-group -->
                 <span class="help-block">Błąd.</span>
@@ -63,185 +100,24 @@
         <div class="row">
             <p class="bg-danger"></p>
         </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <label>Lista uczestników:</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <ol id="wyswUczestnicy"></ol>
+                <div class="center">
+                    <div id="paginator" class="pagination"></div>
+                </div>
+            </div>
+        </div>
+        </div></div>
+        
+        
+        
 
-        <div id="dTabela">
-            <div class="row"><button id="btnRysuj" class="btn">Rysuj</button></div>
-        </div>
-        
-        <div id="dDrabinka"></div>
-        
-        
-        
-        
-<!--        <div id="tTabela">
-            <div class="runda1">
-                <div class="naglowek">
-                    Runda 1
-                </div>
-                <div class="odstep_r1"></div>
-                <div class="mecz_1">
-                    <div class="runda runda1_gora">
-                       <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                       <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="runda1_przerwa1">
-                    &nbsp;
-                </div>
-                <div class="mecz_2">
-                    <div class="runda runda1_gora">
-                        <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                        <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="runda1_przerwa2">
-                    &nbsp;
-                </div>
-                <div class="mecz_1">
-                    <div class="runda runda1_gora">
-                       <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                       <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="runda1_przerwa1">
-                    &nbsp;
-                </div>
-                <div class="mecz_2">
-                    <div class="runda runda1_gora">
-                        <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                        <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="runda1_przerwa2">
-                    &nbsp;
-                </div>
-                <div class="mecz_1">
-                    <div class="runda runda1_gora">
-                       <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                       <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="runda1_przerwa1">
-                    &nbsp;
-                </div>
-                <div class="mecz_2">
-                    <div class="runda runda1_gora">
-                        <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                        <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="runda1_przerwa2">
-                    &nbsp;
-                </div>
-                <div class="mecz_1">
-                    <div class="runda runda1_gora">
-                       <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                       <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="runda1_przerwa1">
-                    &nbsp;
-                </div>
-                <div class="mecz_2">
-                    <div class="runda runda1_gora">
-                        <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                        <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="odstep_r1"></div>
-            </div>
-            <div class="runda2">
-                <div class="naglowek">
-                    Runda 2
-                </div>
-                <div class="odstep_r2"></div>
-                <div class="mecz_1">
-                    <div class="runda runda1_gora">
-                       <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                       <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="runda2_przerwa1">
-                    &nbsp;
-                </div>
-                <div class="mecz_2">
-                    <div class="runda runda1_gora">
-                        <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                        <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="runda2_przerwa2">
-                    &nbsp;
-                </div>
-                <div class="mecz_1">
-                    <div class="runda runda1_gora">
-                       <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                       <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="runda2_przerwa1">
-                    &nbsp;
-                </div>
-                <div class="mecz_2">
-                    <div class="runda runda1_gora">
-                        <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                        <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="odstep_r2"></div>
-            </div>
-            <div class="runda3">
-                <div class="naglowek">
-                    Runda 3
-                </div>
-                <div class="odstep_r3"></div>
-                <div class="mecz_1">
-                    <div class="runda runda1_gora">
-                       <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                       <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="runda3_przerwa1">
-                    &nbsp;
-                </div>
-                <div class="mecz_2">
-                    <div class="runda runda1_gora">
-                       <div class="nazwa">Nazwa_1</div><div class="wynik">0</div><div class="kreski">&nbsp;</div>
-                    </div>
-                    <div class="runda runda1_dol">
-                       <div class="nazwa">Nazwa_2</div><div class="wynik">5</div><div class="kreski">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="odstep_r3"></div>
-            </div>
-        </div>
-        <input type="text" id="ss"><button id="ss1">OK</button>-->
         <div id="sylwia"></div>
     <?php 
         $drab = new Drabinka();
@@ -259,8 +135,9 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="./js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap-paginator.min.js"></script>
     <script type="text/javascript" src="./js/funkcje.js"></script>
   </body>
 </html>
