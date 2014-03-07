@@ -16,62 +16,43 @@
     <!-- Custom styles for this template -->
         <link href="./css/style.css" rel="stylesheet">
 
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
   </head>
 
   <body>
 
     <div class="container">
-<!-- Button trigger modal -->
-<!--<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  Launch demo modal
-</button>-->
-
-<!-- Modal -->
-<div class="modal fade" id="mWynik" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label id="lGracz1" class="col-xs-10 control-label"></label>
-                        <div class="col-xs-2">
-                            <input type="text" class="form-control" id="iGracz1" placeholder="0">
-                        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="mWynik" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                     </div>
-                    <div class="form-group">
-                        <label id="lGracz2" class="col-xs-10 control-label"></label>
-                        <div class="col-xs-2">
-                            <input type="text" class="form-control" id="iGracz2" placeholder="0">
-                        </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label id="lGracz1" class="col-xs-10 control-label"></label>
+                                <div class="col-xs-2">
+                                    <input type="text" class="form-control" id="iGracz1" placeholder="0">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lGracz2" class="col-xs-10 control-label"></label>
+                                <div class="col-xs-2">
+                                    <input type="text" class="form-control" id="iGracz2" placeholder="0">
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
-                <button type="button" class="btn btn-primary">Zatwierdź</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                        <button id="modalAccept" type="button" class="btn btn-primary" data-dismiss="modal">Zatwierdź</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-
-
-        
-        
-        
         <div id="dDrabinka"></div>
         <div class="row"><div class="col-xs-12 col-xs-offset-3">
         <div id="dTabela">
@@ -114,21 +95,6 @@
             </div>
         </div>
         </div></div>
-        
-        
-        
-
-        <div id="sylwia"></div>
-    <?php 
-        $drab = new Drabinka();
-        if(isset($_POST['gracze']))
-        {
-            $drab->AddMorePlayer($_POST['gracze']);
-            
-        }
-        $drab->ShowPlayers();
-    ?>
-
     </div><!-- /.container -->
 
 

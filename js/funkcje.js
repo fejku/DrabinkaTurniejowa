@@ -11,11 +11,13 @@ $(function () {
             Wyswietl(page);
         }
     });
-//    $('#paginator').find('ul').addClass("pagination");
-    
-
+    //Dodawanie gracza po nacisnieci entera
+    $('#gracz').keypress(function(e){
+        if(e.which == 13) {
+            Dodaj();
+        }
+    });
 });
-
 /**
  * Wyswietla listę uczestników
  */
@@ -54,6 +56,10 @@ function Wyswietl(ktoraStrona)
         //Wyswietl komunikat ze musi być wiecej niz 2 graczy
         $('#btnRysuj').off('click');
 }
+
+$('#mWynik').on('hidden.bs.modal', function () {
+    $(this).removeData('bs.modal');
+});
 
 /**
  * Dodaje nowego uczestnika do listy
@@ -206,7 +212,7 @@ function RysujTabele() {
                '<pre>Runda '+(j + 1)+'</pre>' +
                '<div class="pierwOdst"></div>';
         for (var i = 0; i < (wielkoscDrabinki / DzielnikKolejneRundy(j)); i++) {
-            str += '<div class="gracz gracz'+i+'" data-toggle="modal" data-id="'+i+'">' +
+            str += '<div class="gracz gracz'+i+'" data-target="#mWynik" data-toggle="modal" data-id="'+i+'">' +
                         '<div class="nazwa">';
             //Wyswietlaj nazwy graczy tylko w 1 rundzie??
             if(j == 0)
@@ -214,7 +220,7 @@ function RysujTabele() {
             //else
                 //str += '&nbsp;'
             str += '</div>' +
-                    '<div class="wynik">' +
+                    '<div class="wynik wynik'+i+'">' +
                         0 +
                     '</div>' +
                     '<div class="kreski">' +
@@ -285,12 +291,14 @@ function RysujTabele() {
     }
     //w ostaniej rundzie nie wyswietlaj kresek
     tabela.find('#r'+(iloscRund-1)).find('.kreski').css({'border': 0});
+    
     //Po nacisnieciu na gracza
-    $('.gracz').on('click', function() {
-        //Pokaz okienko modalne
-        $('#mWynik').modal({show: true});
+    $('.gracz').on('click', function(e) {
+        var rundaId = $(this).parent().attr('id'); 
+
         //Przypisz do zmiennej id gracza na ktorego nacisnieto
         var gracz1Id = $(this).data('id');
+        
         //Jezeli wybrano drugiego gracza z meczu to 
         //wez wczesniejszego jak nie to nastepnego
         if(gracz1Id % 2 == 0) {
@@ -302,12 +310,53 @@ function RysujTabele() {
         //
         $('#myModalLabel').text("Wynik meczu");
         $('#lGracz1').text(gracze[gracz1Id]);
+        $('#lGracz1').data('graczek1ID', gracz1Id);
+        $('#lGracz1').data('runda', rundaId);
         $('#lGracz2').text(gracze[gracz2Id]);
-        //console.log(gracze[graczId]);
-        //$(".modal-body #bookId").val( myBookId );
+        $('#lGracz2').data('graczek2ID', gracz2Id);
+        //Po zatwierdzeniu wyniku
     });
-}
-
+    $('#modalAccept').on('click', function() {
+        var gracz1Id = $('#lGracz1').data('graczek1ID');
+        var gracz2Id = $('#lGracz2').data('graczek2ID');
+        var rundaId = $('#lGracz1').data('runda');
+        //Jezeli obie zmienne to liczby
+        if(($('#iGracz1').val() == parseInt($('#iGracz1').val())) &&
+                ($('#iGracz2').val() == parseInt($('#iGracz2').val()))) {
+            //Jezeli obie zmienne nie sa 0
+            if(!(($('#iGracz1').val() == 0) && ($('#iGracz1').val() == 0))) {
+                $('#'+rundaId).find('.wynik'+gracz1Id).text($('#iGracz1').val());
+                $('#'+rundaId).find('.wynik'+gracz2Id).text($('#iGracz2').val());
+                //Jezeli wygral gracz 1
+                if($('#iGracz1').val() > $('#iGracz2').val())
+                    //Jezeli to nie jest ostatnia runda
+                    if(rundaId.substring(1) < iloscRund - 1)
+                        $('#r'+(parseInt(rundaId.substring(1)) + 1)).find('.gracz'+(Math.floor(gracz1Id/2))).find('.nazwa').text($('#'+rundaId).find('.gracz'+gracz1Id).find('.nazwa').text());
+                //Jezeli wygral gracz 2    
+                if($('#iGracz2').val() > $('#iGracz1').val())
+                    //Jezeli to nie jest ostatnia runda
+                    if(rundaId.substring(1) < iloscRund - 1)
+                        $('#r'+(parseInt(rundaId.substring(1)) + 1)).find('.gracz'+(Math.floor(gracz2Id/2))).find('.nazwa').text($('#'+rundaId).find('.gracz'+gracz2Id).find('.nazwa').text());
+            }
+        }
+        $('#iGracz1').val('');
+        $('#iGracz2').val('');
+    });
+    for(var i = 0; i < wielkoscDrabinki; i++)
+    {
+        if($('#r0').find('.gracz' + i).find('.nazwa').text() == 'Free Win') {
+            if(i % 2 == 0) {
+                $('#r1').find('.gracz' + Math.floor(i/2)).find('.nazwa').text($('#r0').find('.gracz' + (i+1)).find('.nazwa').text());
+            } else {
+                $('#r1').find('.gracz' + Math.floor(i/2)).find('.nazwa').text($('#r0').find('.gracz' + (i-1)).find('.nazwa').text());
+            }
+        }
+    }
+ }
+ 
+ $('#mWynik').on('hidden.bs.modal', function(e) {
+    $(this).removeData('modal');
+});
 
 function KolejnaPot2(liczba) {
     var pom = 1;
